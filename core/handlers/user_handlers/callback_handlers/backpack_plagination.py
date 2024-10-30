@@ -14,17 +14,25 @@ from core.keyboards.inline_backpack import BackpackCallback, BackpackCategory, B
 
 from re import findall
 
+from core.keyboards.reply import back_menu, open_case_menu
 from core.lexicon.lexicon import LEXICON_BUTTON, LEXICON_MEDIA, LEXICON_STICKERS
 from core.services.create_image import create_prize_image
+from core.utils.functions import delete_message
 
 router = Router(name=__name__)
 
-@router.message(F.text == LEXICON_BUTTON["my_backpack"])
+@router.message((F.text == LEXICON_BUTTON["my_backpack"]) | (F.text == "/backpack"))
 async def backpack_page_handler(message: Message,  bot: Bot):
+
+    await delete_message(message, message.chat.id, message.message_id)
+
+    await message.answer(
+        "🤖: В рюкзаке хранятся твои предметы!",
+        reply_markup=back_menu)
     keyboard = await get_main_backpack_keyboard()  # Page: 0
     path = LEXICON_MEDIA["my_backpack"]
     image = FSInputFile(path)
-    caption = f"🤖: В рюкзаке хранятся твои предметы!"
+    caption = f"🤖: Выбери нужную категорию!"
 
     await bot.send_photo(
         photo=image,
@@ -32,8 +40,6 @@ async def backpack_page_handler(message: Message,  bot: Bot):
         chat_id=message.chat.id,
         reply_markup=keyboard
     )
-    await message.delete()
-
 
 @router.callback_query(
     BackpackCallback.filter(F.category == BackpackCategory.avatars),
@@ -57,7 +63,7 @@ async def backpack_page_handler(query: CallbackQuery, callback_data: BackpackCal
     )
 async def backpack_page_handler(query: CallbackQuery, callback_data: BackpackCallback, bot: Bot):
     page = int(callback_data.page)
-    info_items = await check_items(query.from_user.id, "avatar")
+    info_items, count_items = await check_items(query.from_user.id, "avatar")
     item = info_items[page]
 
     await change_avatar(query.from_user.id, item['item_id'])
@@ -87,6 +93,8 @@ async def backpack_page_handler(query: CallbackQuery, callback_data: BackpackCal
     BackpackCallback.filter(F.action == BackpackAction.open_case)
     )
 async def backpack_page_handler(query: CallbackQuery, callback_data: BackpackCallback, bot: Bot):
+    await bot.delete_message(query.from_user.id, query.message.message_id)
+
     page = int(callback_data.page)
     info_items, count_items = await check_items(query.from_user.id, "case")
 
@@ -105,7 +113,7 @@ async def backpack_page_handler(query: CallbackQuery, callback_data: BackpackCal
         await bot.send_photo(query.from_user.id, image)
         os.remove(image_prize)
 
-        await bot.send_message(query.from_user.id, text_prize)
+        await bot.send_message(query.from_user.id, text_prize, reply_markup=open_case_menu)
     else:
         await bot.send_message(query.from_user.id, f"🤖: У тебя закончились эти кейсы!")
 

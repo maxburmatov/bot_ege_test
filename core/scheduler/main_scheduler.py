@@ -4,7 +4,7 @@ from aiogram import Bot
 
 from core.scheduler.update import update_league
 from core.utils.functions import generate_date_update_league
-
+from core.scheduler.daily_reset import reset_daily_stats
 dp = Dispatcher()
 
 class SchedulerMiddleware(BaseMiddleware):
@@ -26,6 +26,7 @@ async def scheduler_start():
         )
     list_date, last_day_date = await generate_date_update_league()
     scheduler.add_job(update_league, 'cron', hour=17, minute=43, second=0, kwargs={'bot': Bot})
+    scheduler.add_job(reset_daily_stats, 'cron', hour=0, minute=31, second=0)
 
 
 #scheduler.add_job(reset_daily_stats, 'cron', hour=0, minute=0, second=0)

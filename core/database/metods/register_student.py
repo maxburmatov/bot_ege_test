@@ -93,3 +93,8 @@ async def add_student(user_id, name, purpose, invited_tg_id):
             f"INSERT INTO students_inventory (tg_id, item_id, item_count) VALUES (?, ?, ?)",
             info)
         conn.commit()
+
+async def add_student_utc(tg_id, utc):
+    cur.execute(f'UPDATE students SET uts_time = {utc} WHERE tg_id = {tg_id}')
+    conn.commit()
+

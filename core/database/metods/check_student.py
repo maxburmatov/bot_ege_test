@@ -35,7 +35,7 @@ async def check_collect_daily_bonus(tg_id):
     else:
         return True
 
-async def check_daily_tasks(tg_id):
+async def check_limit_daily_tasks(tg_id):
     cur.execute(f'SELECT tasks FROM students_daily WHERE tg_id = {tg_id}')
     info = cur.fetchone()
     tasks = info[0]
@@ -61,3 +61,18 @@ async def check_daily_test(tg_id):
         return False
     else:
         return True
+
+async def check_solve_daily_task(tg_id):
+    cur.execute(f'SELECT daily_task FROM students_daily WHERE tg_id = {tg_id}')
+    info = cur.fetchone()
+    task = info[0]
+    if task == 0:
+        return True
+    else:
+        return False
+
+async def check_invite(tg_id):
+    cur.execute(f'SELECT COUNT(*) FROM students WHERE invited_tg_id = {tg_id}')
+    info = cur.fetchone()
+    count = info[0]
+    return count

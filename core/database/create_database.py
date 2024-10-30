@@ -22,7 +22,10 @@ async def db_start():
                 'days_in_row INTEGER, '
                 'is_active INTEGER, '
                 'stars INTEGER,'
-                'boost TEXT)')
+                'boost TEXT, '
+                'usdt float, '
+                'uts_time INTEGER, '
+                'days_no_active INTEGER)')
 
     cur.execute('CREATE TABLE IF NOT EXISTS sub('
                 'tg_id INTEGER PRIMARY KEY AUTOINCREMENT, '
@@ -79,22 +82,44 @@ async def db_start():
                 'count_item INTEGER, '
                 'stars INTEGER)')
 
-    cur.execute('CREATE TABLE IF NOT EXISTS quests('
+    cur.execute('CREATE TABLE IF NOT EXISTS daily_quests('
                 'id INTEGER PRIMARY KEY AUTOINCREMENT, '
                 'title_quests TEXT, '
                 'type_quest TEXT, '
-                'category_quest TEXT, '
                 'type_prize TEXT, '
                 'points_quest INTEGER,'
                 'item_id INTEGER, '
-                'is_repeat INTEGER)')
+                'count_item INTEGER)')
+
+    cur.execute('CREATE TABLE IF NOT EXISTS other_quests('
+                'id INTEGER PRIMARY KEY AUTOINCREMENT, '
+                'title_quests TEXT, '
+                'type_quest TEXT, '
+                'type_prize TEXT, '
+                'points_quest INTEGER,'
+                'item_id INTEGER, '
+                'is_repeat INTEGER, '
+                'count_item INTEGER, '
+                'next_quest_id INTEGER, '
+                'need_league_id INTEGER, '
+                'start_quest INTEGER)')
 
     cur.execute('CREATE TABLE IF NOT EXISTS students_daily_quest('
                 'id INTEGER PRIMARY KEY AUTOINCREMENT, '
                 'tg_id INTEGER, '
                 'quests_id INTEGER)')
 
-    cur.execute('CREATE TABLE IF NOT EXISTS quests_completed('
+    cur.execute('CREATE TABLE IF NOT EXISTS students_other_quest('
+                'id INTEGER PRIMARY KEY AUTOINCREMENT, '
+                'tg_id INTEGER, '
+                'quests_id INTEGER)')
+
+    cur.execute('CREATE TABLE IF NOT EXISTS daily_quests_completed('
+                'id INTEGER PRIMARY KEY AUTOINCREMENT, '
+                'tg_id INTEGER, '
+                'quests_id INTEGER)')
+
+    cur.execute('CREATE TABLE IF NOT EXISTS other_quests_completed('
                 'id INTEGER PRIMARY KEY AUTOINCREMENT, '
                 'tg_id INTEGER, '
                 'quests_id INTEGER)')
@@ -154,6 +179,16 @@ async def db_start():
                 'item_id INTEGER, '
                 'item_count INTEGER)')
 
+    cur.execute('CREATE TABLE IF NOT EXISTS users_requests('
+                'id INTEGER PRIMARY KEY AUTOINCREMENT, '
+                'date_request TEXT,'
+                'tg_id INTEGER, '
+                'type_request TEXT,'
+                'text_request TEXT, '
+                'photo_request TEXT, '
+                'status_request TEXT,'
+                'answer_request TEXT,'
+                'comment_request TEXT)')
 
     conn.commit()
 

@@ -30,25 +30,36 @@ class StateRandomVar(StatesGroup):
 class StateChangeName(StatesGroup):
     CHANGE_NAME = State()
 
-class StateChangeAvatar(StatesGroup):
-    CHANGED_AVATAR = State()
-
-
 class StateWeeklyVar(StatesGroup):
     CHECK_ANSWER = State()
     NEXT_TASK = State()
 
 class StateRegisterUser(StatesGroup):
     IDENT_PURPOSE = State()
+    IDENT_UTC = State()
 
 class StateAdminAddTask(StatesGroup):
     ADD_TASK = State()
     ADD_ANSWER = State()
-    NEXT_ADD = State()
+
+class StateAdminEditTask(StatesGroup):
+    CHECK_TASK = State()
+    ADD_TASK = State()
+    ADD_ANSWER = State()
 
 class StateAdminAddQuset(StatesGroup):
     ADD_QUEST = State()
 
-class StateDailyQuests(StatesGroup):
-    REVIEW_QUESTS = State()
-    CHESK_QUESTS = State()
+class StateDailyTask(StatesGroup):
+    TASK_SELECTED = State()
+    CHECK_ANSWER = State()
+    END_DAILY_TASK = State()
+
+class StateRequestError(StatesGroup):
+    REQUEST_ERROR = State()
+
+class StateRequestQuestion(StatesGroup):
+    REQUEST_QUESTION = State()
+
+class StateAdminRequestAnswer(StatesGroup):
+    REQUEST_ANSWER = State()

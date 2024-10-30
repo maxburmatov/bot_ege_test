@@ -25,3 +25,17 @@ async def get_random_tasks(number, type_module):
 
     print(data_task)
     return data_task
+
+async def get_daily_task():
+    cur.execute(f'SELECT id FROM data_tasks WHERE is_daily = 1')
+    data = cur.fetchone()
+    current_daily_task = data[0]
+
+    cur.execute(
+        f'select id, number_task, photo_task, photo_answer, answer from data_tasks where id = {current_daily_task}')
+    task = cur.fetchone()
+
+    task_dict = {"id": task[0], "number_task": task[1], "photo_task": task[2], "photo_answer": task[3],
+                 "answer": task[4]}
+
+    return task_dict

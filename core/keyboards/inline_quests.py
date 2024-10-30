@@ -49,12 +49,16 @@ async def get_main_quests_keyboard(page: int = 0) -> InlineKeyboardMarkup:
 
     return builder.as_markup()
 
-async def get_daily_quests_keyboard() -> InlineKeyboardMarkup:
+async def get_quests_keyboard(category: str = "") -> InlineKeyboardMarkup:
+    if category == "daily":
+        category = 2
+    elif category == "other":
+        category = 3
     builder = InlineKeyboardBuilder()
 
     builder.button(
         text=LEXICON_BUTTON["quests_check"],
-        callback_data=QuestsCallback(category=QuestsCategory.daily_quests, action=QuestsAction.check_execution)
+        callback_data=QuestsCallback(category=category, action=QuestsAction.check_execution)
     )
 
     builder.button(

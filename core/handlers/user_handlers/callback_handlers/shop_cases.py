@@ -5,7 +5,7 @@ from core.keyboards.inline_payment import payment_keyboard
 from core.keyboards.inline_shop import get_shop_cases_keyboard, CasesCallback, ShopActions, BuyItemsCount
 
 from aiogram.types import CallbackQuery, InputMediaPhoto, LabeledPrice
-
+from core.utils.functions import delete_message
 
 router = Router()
 
@@ -27,6 +27,7 @@ async def cases_page_handler(query: CallbackQuery, callback_data: CasesCallback,
     photo = InputMediaPhoto(media=image_case, caption=caption)
 
     await query.message.edit_media(photo, reply_markup=keyboard)
+
 
 @router.callback_query(CasesCallback.filter(F.action == ShopActions.buy),
                        CasesCallback.filter(F.item_count == BuyItemsCount.one))

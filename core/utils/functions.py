@@ -1,6 +1,15 @@
 
 import datetime
 import calendar
+from aiogram import Router, Bot, F
+
+import asyncio
+from contextlib import suppress
+
+from aiogram import types
+from core.config_data.config import config
+
+bt = Bot(token=config.bots.bot_token)
 
 async def get_int_time(current_time):
     time = str(current_time)
@@ -84,6 +93,15 @@ async def check_date_update_league():
             checker = True
 
     return checker
+
+async def delete_message(message, message_chat_id, message_message_id):
+    for i in range(1, 10):
+        try:
+            await bt.delete_message(message_chat_id, message_message_id - i)
+        except:
+            pass
+    await message.delete()
+
 
 
 

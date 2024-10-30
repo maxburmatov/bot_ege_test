@@ -134,7 +134,6 @@ async def create_room_image(info_student, stats_daily_student, stats_general_stu
 
 async def create_table_leaders_image(info_all_students, league_id, prize_league):
 
-
     image_leaders_board = Image.open(f'./media/table_leaders/leaders_board_{league_id}.png')
 
     draw = ImageDraw.Draw(image_leaders_board)

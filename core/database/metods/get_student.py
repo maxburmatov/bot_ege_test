@@ -13,6 +13,12 @@ async def get_name(tg_id):
     name = info[0]
     return name
 
+async def get_league_id(tg_id):
+    cur.execute(f'SELECT league_id FROM students WHERE tg_id = {tg_id}')
+    info = cur.fetchone()
+    name = info[0]
+    return name
+
 async def get_remaining_time_boost(tg_id):
     data = await get_time_end_boost(tg_id)
     data_end = datetime.strptime(data, '%Y-%m-%d %H:%M:%S.%f')
@@ -94,16 +100,26 @@ async def get_count_invite(tg_id):
     return count
 
 async def get_daily_temp(tg_id, action, number):
-    cur.execute(
-        f'SELECT count_all, count_r FROM students_daily_temp WHERE tg_id = {tg_id} and action = "{action}" and number = {number}')
-    data = cur.fetchone()
-    if data is None:
-        count_all = 0
-        count_all_r = 0
+    if number == 0:
+        cur.execute(
+            f'SELECT count_all, count_r FROM students_daily_temp WHERE tg_id = {tg_id} and action = "{action}"')
+        data = cur.fetchall()
     else:
-        count_all = data[0]
-        count_all_r = data[1]
-    return count_all, count_all_r
+        cur.execute(
+            f'SELECT count_all, count_r FROM students_daily_temp WHERE tg_id = {tg_id} and action = "{action}" and number = {number}')
+        data = cur.fetchall()
+
+    list_count = []
+
+    if not data:
+        dict_count = {"count_all": 0, "count_r": 0}
+        list_count.append(dict_count)
+    else:
+        for temp in data:
+            dict_count = {"count_all": temp[0], "count_r": temp[1]}
+            list_count.append(dict_count)
+    print(list_count)
+    return list_count
 
 async def get_days_daily_bonus(user_id):
     cur.execute(f'SELECT days_in_row FROM students WHERE tg_id = {user_id}')

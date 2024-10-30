@@ -1,21 +1,23 @@
+import asyncio
 import os
 
 from aiogram import Router, Bot, F
 from aiogram.types import Message, FSInputFile
 
 from core.database.metods.table_leaders import get_info_table_leaders
-from core.keyboards.reply import main_menu
+from core.keyboards.reply import main_menu, back_menu
 from core.lexicon.endings_words import ending_hours
 from core.lexicon.lexicon import LEXICON_BUTTON, LEXICON_STICKERS
 from core.services.create_image import create_table_leaders_image
-from core.utils.functions import get_hours_update_league
+from core.utils.functions import get_hours_update_league, delete_message
 
 router = Router()
 
-@router.message(F.text == LEXICON_BUTTON["table_leaders"])
+@router.message((F.text == LEXICON_BUTTON["table_leaders"]) | (F.text == "/leaders")
+                )
 async def my_room(message: Message, bot: Bot):
-    await message.delete()
-    await bot.send_sticker(message.from_user.id, LEXICON_STICKERS["transfer"])
+
+    await delete_message(message, message.chat.id, message.message_id)
 
     info_all_students, current_student, prize_league = await get_info_table_leaders(message.from_user.id)
     hours_update_league = await get_hours_update_league()
@@ -27,19 +29,24 @@ async def my_room(message: Message, bot: Bot):
 
     path = await create_table_leaders_image(info_all_students, current_student['league_id'], prize_league)
     image = FSInputFile(path)
+
+    await message.answer("🤖: Загружаю таблицу лидеров...")
+    await asyncio.sleep(1)
+    await bot.send_sticker(message.from_user.id, LEXICON_STICKERS["transfer"])
+    await bot.send_chat_action(message.chat.id, action="upload_photo")
+    await asyncio.sleep(2)
+
     await message.answer_photo(image)
     os.remove(path)
 
     league_answer, place_answer, stars_answer = await message_league_info(league_id, league_title, place, points, count_students_league)
 
-    await message.answer(f"{league_answer}")
-    await message.answer(f"{place_answer}")
-    await message.answer(f"{stars_answer}")
-    await message.answer(
-        f"🤖: Чем выше лига, тем круче подарки! Дойдя до последней лиги ты получишь подарки в конце месяца, а первые 10 человек примут участие в розыгрыше!")
-    await message.answer(
-        f"🤖: До обновления лиг: {hours_update_league} {await ending_hours(hours_update_league)}!",
-        reply_markup=main_menu)
+    await message.answer(f"{league_answer}\n\n"
+                         f"{place_answer}\n\n"
+                         f"{stars_answer}\n\n"
+                         f"🤖: Чем выше лига, тем круче подарки! Дойдя до последней лиги ты получишь подарки в конце месяца, а первые 10 человек примут участие в розыгрыше!\n\n"
+                         f"🤖: До обновления лиг: {hours_update_league} {await ending_hours(hours_update_league)}!",
+                         reply_markup=back_menu)
 
 async def message_league_info(league_id, league_title, place, points, count_students_league):
     match league_id:

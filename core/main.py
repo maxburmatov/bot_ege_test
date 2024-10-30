@@ -1,6 +1,6 @@
 import asyncio
 import logging
-
+from aiogram.filters import CommandStart, Command
 from aiogram import Bot, Dispatcher, F
 from aiogram.fsm.storage.memory import MemoryStorage
 from core.keyboards.main_menu import set_main_menu
@@ -8,6 +8,7 @@ from core.scheduler.main_scheduler import scheduler_start
 from core.services.payment import pre_checkout_query, successful_pay
 from database.create_database import db_start
 from aiogram.enums import ContentType
+from aiogram.enums.parse_mode import ParseMode
 
 from config_data.config import config
 

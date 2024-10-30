@@ -2,8 +2,43 @@ from aiogram.types import (
     ReplyKeyboardMarkup,
     KeyboardButton
 )
+from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
-from core.lexicon.lexicon import LEXICON_BUTTON
+from core.lexicon.lexicon import LEXICON_BUTTON, LEXICON_BUTTON_main_menu, LEXICON_BUTTON_solve_menu, \
+    LEXICON_BUTTON_back_menu, LEXICON_BUTTON_theory_menu, LEXICON_BUTTON_UTC
+
+
+async def main_menu_keyboard():
+    builder = ReplyKeyboardBuilder()
+    for key in LEXICON_BUTTON_main_menu:
+        builder.button(text=LEXICON_BUTTON_main_menu[key])
+    builder.adjust(2, 2, 2, 2)
+    return builder.as_markup(resize_keyboard=True)
+
+async def solve_menu_keyboard():
+    builder = ReplyKeyboardBuilder()
+    for key in LEXICON_BUTTON_solve_menu:
+        builder.button(text=LEXICON_BUTTON_solve_menu[key])
+    builder.button(text=LEXICON_BUTTON_back_menu["back_menu"])
+    builder.adjust(2, 1, 1, 1, 1)
+    return builder.as_markup(resize_keyboard=True)
+
+async def theory_menu_keyboard():
+    builder = ReplyKeyboardBuilder()
+    for key in LEXICON_BUTTON_theory_menu:
+        builder.button(text=LEXICON_BUTTON_theory_menu[key])
+    builder.button(text=LEXICON_BUTTON_back_menu["back_solve"])
+    builder.adjust(1, 1, 1)
+    return builder.as_markup(resize_keyboard=True)
+
+async def time_utc_keyboard():
+    builder = ReplyKeyboardBuilder()
+    for key in LEXICON_BUTTON_UTC:
+        builder.button(text=LEXICON_BUTTON_UTC[key])
+    builder.button(text=LEXICON_BUTTON_back_menu["back_solve"])
+    builder.adjust(1)
+    return builder.as_markup(resize_keyboard=True)
+
 
 main_menu = ReplyKeyboardMarkup(
     keyboard=[
@@ -79,6 +114,24 @@ back_menu = ReplyKeyboardMarkup(
     keyboard=[
         [
             KeyboardButton(text=LEXICON_BUTTON["back_menu"])
+        ]
+    ],
+    resize_keyboard=True
+)
+
+back_solve = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text=LEXICON_BUTTON["back"])
+        ]
+    ],
+    resize_keyboard=True
+)
+
+back_info = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text=LEXICON_BUTTON["back_info"])
         ]
     ],
     resize_keyboard=True
@@ -177,8 +230,18 @@ next_task = ReplyKeyboardMarkup(
             KeyboardButton(text=LEXICON_BUTTON["check_solution"])
         ],
         [
-            KeyboardButton(text=LEXICON_BUTTON["back_menu"]),
+            KeyboardButton(text=LEXICON_BUTTON["back"]),
             KeyboardButton(text=LEXICON_BUTTON["next_task"])
+        ]
+    ],
+    resize_keyboard=True
+)
+
+end_daily_task = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text=LEXICON_BUTTON["check_solution"]),
+            KeyboardButton(text=LEXICON_BUTTON["back"])
         ]
     ],
     resize_keyboard=True
@@ -215,6 +278,27 @@ results_menu = ReplyKeyboardMarkup(
 )
 
 
+begin_solve_menu = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text=LEXICON_BUTTON["back"]),
+            KeyboardButton(text=LEXICON_BUTTON["begin_solve"])
+        ]
+    ],
+    resize_keyboard=True
+)
+
+open_case_menu = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text=LEXICON_BUTTON["back_menu"]),
+            KeyboardButton(text=LEXICON_BUTTON["my_backpack"])
+        ]
+    ],
+    resize_keyboard=True
+)
+
+
 tasks_selection_menu = ReplyKeyboardMarkup(
     keyboard=[
         [
@@ -241,3 +325,33 @@ tasks_selection_menu = ReplyKeyboardMarkup(
     ],
     resize_keyboard=True
 )
+
+help_menu = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text=LEXICON_BUTTON["report_error"]),
+        ],
+        [
+            KeyboardButton(text=LEXICON_BUTTON["faq"]),
+        ],
+        [
+            KeyboardButton(text=LEXICON_BUTTON["back_info"])
+        ],
+    ],
+    resize_keyboard=True
+)
+
+faq_menu = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text=LEXICON_BUTTON["ask_question"]),
+        ],
+        [
+            KeyboardButton(text=LEXICON_BUTTON["back_info"])
+        ],
+    ],
+    resize_keyboard=True
+)
+
+
+
