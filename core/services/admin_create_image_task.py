@@ -24,7 +24,7 @@ async def create_prize_image(number_task):
     link_bot = LEXICON_CREATE_IMAGE_TASK["link"]
     watermark = LEXICON_CREATE_IMAGE_TASK["link"]
 
-    str_title = prize['title_item']
+    str_title = prize1['title_item']
     str_title = str_title.split("-")
 
     draw.text((title1_x, title1_y), f'{str_title[0]}', fill='white', font=font)
