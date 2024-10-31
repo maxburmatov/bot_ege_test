@@ -2,7 +2,7 @@ from aiogram import Router, Bot, F
 from aiogram.enums import ParseMode
 from aiogram.filters import StateFilter
 from aiogram.fsm.context import FSMContext
-from aiogram.types import Message
+from aiogram.types import Message, FSInputFile
 
 from aiogram.utils.deep_linking import create_start_link
 from core.database.admin_metods import admin_add_task_database, get_task_info, admin_edit_task_database
@@ -12,6 +12,7 @@ from core.filters.user_filters import IsAdmin
 
 from core.keyboards.reply_admin import get_admin_panel, admin_edit_menu, main_menu_keyboard_admin
 from core.lexicon.lexicon import LEXICON_BUTTON, LEXICON_STICKERS
+from core.services.admin_create_image_task import create_image_task
 from core.states.states import StateAdminAddTask, StateAdminEditTask
 from core.utils.functions import delete_message
 
@@ -42,4 +43,20 @@ async def send_echo(message: Message, bot: Bot, state: FSMContext):
 
     await delete_message(message, message.chat.id, message.message_id)
 
-    count_all, count_all_r = await get_daily_temp(message.chat.id, "task", 7)
+    list_tasks = await create_image_task()
+    for task in list_tasks:
+        task_image = FSInputFile(task["task_image"])
+        answer_image = FSInputFile(task["answer_image"])
+
+        send_task = await message.answer_photo(task_image)
+        print(send_task)
+        photo_id_task = send_task.photo[-1].file_id
+        print(photo_id_task)
+        send_answer = await message.answer_photo(answer_image)
+        photo_id_answer = send_answer.photo[-1].file_id
+        print(photo_id_answer)
+
+        await admin_add_task_database(int(task["number"]), photo_id_task, photo_id_answer, task["answer"])
+
+
+
