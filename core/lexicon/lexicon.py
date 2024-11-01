@@ -27,7 +27,7 @@ LEXICON_MEDIA: dict[str, str] = {
     'my_backpack': './media/my_backpack.png',
     'category_request': './media/admin/category_request.png',
     'no_photo_request': './media/admin/no_photo_request.png',
-
+    'info_sub': './media/info_sub.png',
 }
 
 LEXICON_STICKERS: dict[str, str] = {

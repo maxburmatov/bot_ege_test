@@ -1,6 +1,6 @@
 from aiogram import Router, Bot, F
 from aiogram.enums import ParseMode
-from aiogram.types import Message
+from aiogram.types import Message, FSInputFile
 from aiogram.fsm.context import FSMContext
 from aiogram.filters import StateFilter
 
@@ -9,7 +9,7 @@ from core.database.metods.get_student import get_count_invite
 from core.database.metods.request_users import add_request
 
 from core.keyboards.reply import info_menu, help_menu, back_info, faq_menu
-from core.lexicon.lexicon import LEXICON_BUTTON, LEXICON_STICKERS
+from core.lexicon.lexicon import LEXICON_BUTTON, LEXICON_STICKERS, LEXICON_MEDIA
 from core.states.states import StateRequestError, StateRequestQuestion
 from core.utils.functions import delete_message
 
@@ -24,6 +24,15 @@ async def info(message: Message, bot: Bot, state: FSMContext):
 
     await bot.send_sticker(message.from_user.id, LEXICON_STICKERS["info"])
     await message.answer("🤖: Что хочешь посмотреть?", reply_markup=info_menu)
+
+@router.message(F.text == LEXICON_BUTTON["info_sub"])
+async def invite_friends(message: Message, bot: Bot):
+
+    await delete_message(message, message.chat.id, message.message_id)
+    info_image = FSInputFile(LEXICON_MEDIA["info_sub"])
+
+    await message.answer_photo(info_image, reply_markup=info_menu)
+    await message.answer("🤖: Пока что нельзя оформить подписку!")
 
 @router.message(F.text == LEXICON_BUTTON["invite_friends"])
 async def invite_friends(message: Message, bot: Bot):
