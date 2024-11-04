@@ -63,7 +63,7 @@ async def main_menu_keyboard_admin():
     builder.adjust(2, 2, 2, 2, 1)
     return builder.as_markup(resize_keyboard=True)
 
-admin_panel_menu = ReplyKeyboardMarkup(
+admin_stats_menu = ReplyKeyboardMarkup(
     keyboard=[
         [
             KeyboardButton(text=LEXICON_BUTTON["admin_stats"]),
@@ -99,6 +99,16 @@ admin_edit_menu = ReplyKeyboardMarkup(
     ],
     resize_keyboard=True
 )
+
+back_admin_panel = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text=LEXICON_BUTTON["back_admin_panel"])
+        ]
+    ],
+    resize_keyboard=True
+)
+
 
 
 back_admin_request = ReplyKeyboardMarkup(

@@ -1,4 +1,5 @@
 import sqlite3
+from datetime import date
 
 from aiogram.types import FSInputFile
 from core.lexicon.lexicon import LEXICON_MEDIA
@@ -9,8 +10,11 @@ cur = conn.cursor()
 
 async def admin_add_task_database(number, photo_task, photo_answer, answer):
     info = (number, photo_task, photo_answer, answer, 0, 0)
-    cur.execute(f'INSERT INTO data_tasks (number_task, photo_task, photo_answer, answer, is_week, is_daily) VALUES (?, ?, ?, ?, ?, ?)', info)
+    cur.execute(
+        f'INSERT INTO data_tasks (number_task, photo_task, photo_answer, answer, is_week, is_daily) VALUES (?, ?, ?, ?, ?, ?)',
+        info)
     conn.commit()
+
 
 async def admin_edit_task_database(task_id, number, photo_task, photo_answer, answer):
     cur.execute(
@@ -28,6 +32,7 @@ async def get_task_info(task_id):
 
     return task_dict
 
+
 async def get_count_new_request():
     cur.execute(
         f'SELECT COUNT(id) FROM users_requests WHERE status_request = "new"')
@@ -36,6 +41,7 @@ async def get_count_new_request():
     count_new_request = data[0]
 
     return count_new_request
+
 
 async def get_count_status_request():
     cur.execute(
@@ -51,6 +57,7 @@ async def get_count_status_request():
     count_request = {"count_new_request": count_new_request, "count_finished_request": count_finished_request}
 
     return count_request
+
 
 async def get_count_type_request(status_request):
     cur.execute(
@@ -68,9 +75,11 @@ async def get_count_type_request(status_request):
     data = cur.fetchone()
     count_error_task_request = data[0]
 
-    count_request = {"count_question_request": count_question_request, "count_error_request": count_error_request, "count_error_task_request": count_error_task_request}
+    count_request = {"count_question_request": count_question_request, "count_error_request": count_error_request,
+                     "count_error_task_request": count_error_task_request}
 
     return count_request
+
 
 async def get_request(counter, status_request, type_request):
     if status_request == 1:
@@ -110,7 +119,7 @@ async def get_request(counter, status_request, type_request):
     if info_request["photo_request"] is None:
         path = LEXICON_MEDIA["no_photo_request"]
         image = FSInputFile(path)
-        info_request["photo_request"] =  image
+        info_request["photo_request"] = image
 
     return info_request
 
@@ -120,15 +129,18 @@ async def request_add_answer(id_request, answer):
         f'UPDATE users_requests SET answer_request = "{answer}" WHERE id = {id_request}')
     conn.commit()
 
+
 async def request_mark_spam(id_request):
     cur.execute(
         f'UPDATE users_requests SET comment_request = "spam", status_request = "finished" WHERE id = {id_request}')
     conn.commit()
 
+
 async def request_mark_finished(id_request):
     cur.execute(
         f'UPDATE users_requests SET status_request = "finished" WHERE id = {id_request}')
     conn.commit()
+
 
 async def get_all_students_tg_id(id_request):
     cur.execute(
@@ -136,3 +148,74 @@ async def get_all_students_tg_id(id_request):
     conn.commit()
 
 
+async def get_general_daily_stats():
+    date_today = str(date.today())
+    stats_dict = {}
+
+    cur.execute(
+        f'SELECT COUNT(tg_id) FROM students WHERE LENGTH(tg_id) > 2')
+    data = cur.fetchone()
+    stats_dict = {"count_all_students": data[0]}
+
+    cur.execute(
+        f'SELECT COUNT(date_start) FROM students WHERE date_start = "{date_today}"')
+    data = cur.fetchone()
+    stats_dict.update({"count_new_students": data[0]})
+
+    cur.execute(
+        f'SELECT COUNT(tg_id) FROM students_daily')
+    data = cur.fetchone()
+    stats_dict.update({"count_daily_active_students": data[0]})
+
+    percent_active_daily_students = int(
+        stats_dict["count_daily_active_students"] / stats_dict["count_all_students"] * 100)
+    stats_dict.update({"percent_active_daily_students": f"{percent_active_daily_students}%"})
+
+    cur.execute(f'SELECT SUM(tasks), SUM(tests), SUM(variants), SUM(daily_task) FROM students_daily')
+    data = cur.fetchone()
+    stats_dict.update({"count_tasks": data[0],
+                       "count_tests": data[1],
+                       "count_variants": data[2],
+                       "count_daily_task": data[3],
+                       })
+
+    percent_count_daily_task = int(
+        stats_dict["count_daily_task"] / stats_dict["count_daily_active_students"] * 100)
+    stats_dict.update({"percent_count_daily_task": f"{percent_count_daily_task}%"})
+
+    cur.execute(f'SELECT SUM(points), AVG(points), MAX(points) FROM students_daily')
+    data = cur.fetchone()
+    stats_dict.update({"sum_points": data[0],
+                       "avg_points": data[1],
+                       "max_points": data[2],
+                       })
+
+    cur.execute(f'SELECT tg_id FROM students_daily WHERE points = {stats_dict["max_points"]}')
+    data = cur.fetchone()
+    stats_dict.update({"leader_tg_id": data[0]})
+
+    cur.execute(f'SELECT name, title_league FROM students JOIN league ON league_id = league.id WHERE tg_id = {stats_dict["leader_tg_id"]}')
+    data = cur.fetchone()
+    stats_dict.update({"leader_name": data[0],
+                       "leader_title_league": data[1],
+                       })
+
+    cur.execute(
+        f'SELECT COUNT(quests_id) FROM daily_quests_completed')
+    data = cur.fetchone()
+    stats_dict.update({"count_completed_daily_quests": data[0],
+                       })
+
+    cur.execute(
+        f'SELECT COUNT(quests_id) FROM daily_quests_completed WHERE quests_id = 94')
+    data = cur.fetchone()
+    stats_dict.update({"count_completed_all_daily_quests": data[0],
+                       })
+
+    percent_completed_all_daily_quests = int(
+        stats_dict["count_completed_all_daily_quests"] / stats_dict["count_daily_active_students"] * 100)
+    stats_dict.update({"percent_completed_all_daily_quests": f"{percent_completed_all_daily_quests}%"})
+
+    print(stats_dict)
+
+    return stats_dict
