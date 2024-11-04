@@ -43,7 +43,7 @@ async def get_items_from_case(case_id):
     info_case = []
 
     for item in data:
-        item_image = f"./media/case/{item[2]}"
+        item_image = f"./core/media/case/{item[2]}"
         dict_item = {'item_id': item[0], 'title_item': item[1], 'image_item': item_image, 'type_item': item[3], 'weight_item': item[4]}
         info_case.append(dict_item)
 
@@ -65,7 +65,7 @@ async def get_image_avatar_profile(item_id):
     stats = cur.fetchone()
 
     avatar_title = stats[0]
-    avatar_image = f"./media/avatars_profile/{avatar_title}"
+    avatar_image = f"./core/media/avatars_profile/{avatar_title}"
 
     return avatar_image
 

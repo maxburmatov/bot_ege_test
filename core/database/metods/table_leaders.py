@@ -29,7 +29,7 @@ async def get_info_student_league(tg_id):
     current_student = cur.fetchone()
 
     avatar_title = current_student[2]
-    avatar_image = f"./media/table_leaders/avatars/{avatar_title}"
+    avatar_image = f"./core/media/table_leaders/avatars/{avatar_title}"
     image_item = avatar_image
 
     info_student["name"] = current_student[0]
@@ -49,7 +49,7 @@ async def get_table_top10(league_id):
     for student in data:
         list_student = list(student)
         avatar_title = student[2]
-        avatar_image = f"./media/table_leaders/avatars/{avatar_title}"
+        avatar_image = f"./core/media/table_leaders/avatars/{avatar_title}"
         list_student[2] = avatar_image
         all_students.append(list_student)
 
@@ -65,7 +65,7 @@ async def get_prize_league(league_id):
     for item in data:
         list_item = list(item)
         item_title = item[2]
-        item_image = f"./media/table_leaders/items/{item_title}"
+        item_image = f"./core/media/table_leaders/items/{item_title}"
         list_item[2] = item_image
         info_prize_with_items.append(list_item)
 
