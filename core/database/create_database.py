@@ -41,7 +41,8 @@ async def db_start():
                 'variants INTEGER, '
                 'weekly_var INTEGER,'
                 'daily_task INTEGER, '
-                'collect_daily_points INTEGER)')
+                'collect_daily_points INTEGER,'
+                'points INTEGER)')
 
     cur.execute('CREATE TABLE IF NOT EXISTS general_stats_students('
                 'tg_id INTEGER PRIMARY KEY AUTOINCREMENT, '
@@ -189,6 +190,23 @@ async def db_start():
                 'status_request TEXT,'
                 'answer_request TEXT,'
                 'comment_request TEXT)')
+
+    cur.execute('CREATE TABLE IF NOT EXISTS admin_general_stats_for_day('
+                'id INTEGER PRIMARY KEY AUTOINCREMENT, '
+                'date TEXT,'
+                'all_students INTEGER, '
+                'new_students INTEGER, '
+                'active_students INTEGER, '
+                'count_tasks INTEGER,'
+                'count_daily_tasks INTEGER,'               
+                'count_tests INTEGER, '
+                'count_var INTEGER, '
+                'all_points INTEGER, '
+                'max_points INTEGER, '
+                'tg_id_max_points INTEGER,'
+                'count_all_daily_quests INTEGER, '
+                'count_quests INTEGER,'
+                'count_get_case INTEGER)')
 
     conn.commit()
 
