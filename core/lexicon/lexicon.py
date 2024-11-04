@@ -24,10 +24,10 @@ LEXICON_POINTS: dict[str, int] = {
 }
 
 LEXICON_MEDIA: dict[str, str] = {
-    'my_backpack': './media/my_backpack.png',
-    'category_request': './media/admin/category_request.png',
-    'no_photo_request': './media/admin/no_photo_request.png',
-    'info_sub': './media/info_sub.png',
+    'my_backpack': './core/media/my_backpack.png',
+    'category_request': './core/media/admin/category_request.png',
+    'no_photo_request': './core/media/admin/no_photo_request.png',
+    'info_sub': './core/media/info_sub.png',
 }
 
 LEXICON_STICKERS: dict[str, str] = {
@@ -156,6 +156,11 @@ LEXICON_BUTTON: dict[str, str] = {
     'admin_stats': '🔬 Cтатистика',
 
     'admin_users': '👶🏼 Пользователи',
+
+    'admin_users_all': 'Все',
+    'admin_users_active': 'Активные',
+    'admin_users_no_active': 'Неактивные',
+
 
     'admin_edit': '🔧 Добавить/Изменить',
     'admin_add_task': '🔖 Добавить задание',

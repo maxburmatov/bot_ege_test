@@ -10,7 +10,7 @@ async def create_prize_image(item_id, prize):
     image_open_case = Image.open(image)
 
     draw = ImageDraw.Draw(image_open_case)
-    font = ImageFont.truetype('./font/Montserrat-Medium.ttf', size=52)
+    font = ImageFont.truetype('./core/font/Montserrat-Medium.ttf', size=52)
 
     title1_x, title1_y = 920, 1940
     title2_x, title2_y = 920, 2000
@@ -28,7 +28,7 @@ async def create_prize_image(item_id, prize):
     image_avatar = Image.open(f'{prize['image_item']}')
     image_open_case.paste(image_avatar, (avatar_x, avatar_y), mask=image_avatar)
 
-    image_open_case.save(f'./media/temp/{random_str}.png', quality=100)
+    image_open_case.save(f'./core/media/temp/{random_str}.png', quality=100)
 
     path = f'./media/temp/{random_str}.png'
 
@@ -36,14 +36,14 @@ async def create_prize_image(item_id, prize):
 
 
 async def create_room_image(info_student, stats_daily_student, stats_general_student, info_league):
-    image_room_stats = Image.open('./media/room_stats.png')
+    image_room_stats = Image.open('./core/media/room_stats.png')
 
     draw = ImageDraw.Draw(image_room_stats)
 
-    font = ImageFont.truetype('./font/Montserrat-Medium.ttf', size=36)
-    font_league = ImageFont.truetype('./font/Montserrat-Bold.ttf', size=36)
-    font2 = ImageFont.truetype('./font/Montserrat-Medium.ttf', size=40)
-    font_count = ImageFont.truetype('./font/Montserrat-Medium.ttf', size=96)
+    font = ImageFont.truetype('./core/font/Montserrat-Medium.ttf', size=36)
+    font_league = ImageFont.truetype('./core/font/Montserrat-Bold.ttf', size=36)
+    font2 = ImageFont.truetype('./core/font/Montserrat-Medium.ttf', size=40)
+    font_count = ImageFont.truetype('./core/font/Montserrat-Medium.ttf', size=96)
 
     main_fill = (8, 61, 130)
     league1_fill = (31, 201, 62)
@@ -126,18 +126,18 @@ async def create_room_image(info_student, stats_daily_student, stats_general_stu
     draw.text((points_x, points_y), f'{info_student.get("points")}', fill=main_fill, font=font_count)
     draw.text((stars_x, stars_y), f'{info_student.get("stars")}', fill=main_fill, font=font_count)
 
-    image_room_stats.save(f'./media/temp/{random_str}.png', quality=100)
+    image_room_stats.save(f'./core/media/temp/{random_str}.png', quality=100)
 
-    path = f'./media/temp/{random_str}.png'
+    path = f'./core/media/temp/{random_str}.png'
 
     return path
 
 async def create_table_leaders_image(info_all_students, league_id, prize_league):
 
-    image_leaders_board = Image.open(f'./media/table_leaders/leaders_board_{league_id}.png')
+    image_leaders_board = Image.open(f'./core/media/table_leaders/leaders_board_{league_id}.png')
 
     draw = ImageDraw.Draw(image_leaders_board)
-    font = ImageFont.truetype('./font/Montserrat-Medium.ttf', size=64)
+    font = ImageFont.truetype('./core/font/Montserrat-Medium.ttf', size=64)
 
     name_x, name_y = 470, 365
     points_x, points_y = 1050, 365
@@ -270,8 +270,8 @@ async def create_table_leaders_image(info_all_students, league_id, prize_league)
             points_y += 226
             avatar_y += 226
 
-    image_leaders_board.save(f'./media/{random_str}.png', quality=100)
+    image_leaders_board.save(f'./core/media/temp/{random_str}.png', quality=100)
 
-    path = f'./media/{random_str}.png'
+    path = f'./core/media/temp/{random_str}.png'
 
     return path
