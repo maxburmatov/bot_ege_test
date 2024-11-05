@@ -147,6 +147,79 @@ async def get_all_students_tg_id(id_request):
         f'UPDATE users_requests SET status_request = "finished" WHERE id = {id_request}')
     conn.commit()
 
+async def get_general_info_bots():
+    info_dict = {}
+    cur.execute(
+        f'SELECT COUNT(tg_id) FROM students WHERE LENGTH(tg_id) = 2')
+    data = cur.fetchone()
+    info_dict.update({"count_bots": data[0]})
+
+    cur.execute(
+        f'SELECT COUNT(tg_id) FROM students WHERE LENGTH(tg_id) = 2 and league_id = 1')
+    data = cur.fetchone()
+    info_dict.update({"count_bots_league_1": data[0]})
+
+    cur.execute(
+        f'SELECT COUNT(tg_id) FROM students WHERE LENGTH(tg_id) = 2 and league_id = 2')
+    data = cur.fetchone()
+    info_dict.update({"count_bots_league_2": data[0]})
+
+    cur.execute(
+        f'SELECT COUNT(tg_id) FROM students WHERE LENGTH(tg_id) = 2 and league_id = 3')
+    data = cur.fetchone()
+    info_dict.update({"count_bots_league_3": data[0]})
+
+    cur.execute(
+        f'SELECT COUNT(tg_id) FROM students WHERE LENGTH(tg_id) = 2 and league_id = 4')
+    data = cur.fetchone()
+    info_dict.update({"count_bots_league_4": data[0]})
+
+    return info_dict
+
+async def get_info_all_bots():
+    info_list = []
+    cur.execute(
+        f'SELECT tg_id, name, points, league_id, avatar_id FROM students WHERE LENGTH(tg_id) = 2')
+    bots = cur.fetchall()
+    for bot in bots:
+        info_bot = {}
+        info_bot.update({"tg_id": bot[0]})
+        info_bot.update({"name": bot[1]})
+        info_bot.update({"points": bot[2]})
+        info_bot.update({"league_id": bot[3]})
+        info_bot.update({"avatar_id": bot[4]})
+        info_list.append(info_bot)
+
+    return info_list
+
+
+async def admin_add_points(tg_id, points):
+    cur.execute(
+        f'UPDATE students SET points = points + {points} WHERE tg_id = {tg_id}')
+    conn.commit()
+
+async def admin_del_points(tg_id, points):
+    cur.execute(
+        f'UPDATE students SET points = points - {points} WHERE tg_id = {tg_id}')
+    conn.commit()
+
+async def admin_change_name(tg_id, name):
+    cur.execute(
+        f'UPDATE students SET name = "{name}" WHERE tg_id = {tg_id}')
+    conn.commit()
+
+async def admin_change_avatar(tg_id, avatar_id):
+    cur.execute(
+        f'UPDATE students SET avatar_id = {avatar_id} WHERE tg_id = {tg_id}')
+    conn.commit()
+
+async def admin_add_bot(tg_id, name, points, avatar_id, league_id):
+    info = (tg_id, name, points, avatar_id, league_id)
+    cur.execute(
+        f'INSERT INTO students (tg_id, name, points, avatar_id, league_id) VALUES (?, ?, ?, ?, ?)',
+        info)
+    conn.commit()
+
 
 async def get_general_daily_stats():
     date_today = str(date.today())
