@@ -3,7 +3,7 @@ from aiogram.types import (
     KeyboardButton
 )
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
-from core.database.admin_metods import get_count_new_request, get_count_status_request
+from core.database.metods.admin_metods import get_count_new_request, get_count_status_request
 
 from core.lexicon.lexicon import LEXICON_BUTTON, LEXICON_BUTTON_main_menu
 

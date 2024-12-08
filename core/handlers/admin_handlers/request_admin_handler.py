@@ -3,7 +3,7 @@ from aiogram.filters import StateFilter
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, FSInputFile, CallbackQuery, InputMediaPhoto
 
-from core.database.admin_metods import get_request, \
+from core.database.metods.admin_metods import get_request, \
     request_add_answer, request_mark_spam, request_mark_finished
 from core.database.metods.get_student import get_name
 from core.filters.user_filters import IsAdmin

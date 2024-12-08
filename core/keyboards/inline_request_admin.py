@@ -1,6 +1,5 @@
 from aiogram.filters.callback_data import CallbackData
 from aiogram.types import (
-    InlineKeyboardButton,
     InlineKeyboardMarkup,
 )
 from aiogram import types
@@ -9,8 +8,7 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from enum import IntEnum, auto
 
-from core.database.admin_metods import get_request, get_count_type_request
-from core.database.metods.shop import get_shop_case
+from core.database.metods.admin_metods import get_count_type_request
 from core.lexicon.lexicon import LEXICON_BUTTON
 
 

@@ -7,16 +7,13 @@ from aiogram.filters import StateFilter
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
-from aiogram.utils.deep_linking import create_start_link
-from core.database.admin_metods import admin_add_task_database, get_task_info, admin_edit_task_database, \
-    get_general_info_bots, get_info_all_bots, admin_add_points, admin_del_points, admin_change_name, \
+from core.database.metods.admin_metods import get_general_info_bots, get_info_all_bots, admin_add_points, admin_del_points, admin_change_name, \
     admin_change_avatar, admin_add_bot
-from core.database.metods.get_student import get_count_invite
 from core.filters.user_filters import IsAdmin
 
-from core.keyboards.reply_admin import get_admin_panel, admin_edit_menu, admin_bots_menu
-from core.lexicon.lexicon import LEXICON_BUTTON, LEXICON_STICKERS
-from core.states.states import StateAdminAddTask, StateAdminEditTask, StateAdminAddPointsAllBots
+from core.keyboards.reply_admin import admin_bots_menu
+from core.lexicon.lexicon import LEXICON_BUTTON
+from core.states.states import StateAdminAddPointsAllBots
 from core.utils.functions import delete_message
 
 router = Router()
