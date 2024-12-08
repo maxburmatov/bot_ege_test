@@ -1,19 +1,13 @@
 from aiogram import Router, Bot, F
-from aiogram.enums import ParseMode
-from aiogram.filters import StateFilter
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, FSInputFile
 
-from aiogram.utils.deep_linking import create_start_link
-from core.database.admin_metods import admin_add_task_database, get_task_info, admin_edit_task_database
-from core.database.metods.get_student import get_count_invite, get_daily_temp
-from core.database.metods.quests import generate_daily_quests
+from core.database.metods.admin_metods import admin_add_task_database
 from core.filters.user_filters import IsAdmin
 
-from core.keyboards.reply_admin import get_admin_panel, admin_edit_menu, main_menu_keyboard_admin
-from core.lexicon.lexicon import LEXICON_BUTTON, LEXICON_STICKERS
+from core.keyboards.reply_admin import get_admin_panel, main_menu_keyboard_admin
+from core.lexicon.lexicon import LEXICON_BUTTON
 from core.services.admin_create_image_task import create_image_task
-from core.states.states import StateAdminAddTask, StateAdminEditTask
 from core.utils.functions import delete_message
 
 router = Router()

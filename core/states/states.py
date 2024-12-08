@@ -63,3 +63,6 @@ class StateRequestQuestion(StatesGroup):
 
 class StateAdminRequestAnswer(StatesGroup):
     REQUEST_ANSWER = State()
+
+class StateAdminAddPointsAllBots(StatesGroup):
+    ADD_POINTS = State()

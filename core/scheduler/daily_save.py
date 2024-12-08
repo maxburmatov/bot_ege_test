@@ -1,7 +1,7 @@
 import sqlite3
-from datetime import date, datetime, timedelta
+from datetime import date
 
-from core.database.admin_metods import get_general_daily_stats
+from core.database.metods.admin_metods import get_general_daily_stats
 
 conn = sqlite3.connect('data.sqlite', check_same_thread=False)
 cur = conn.cursor()

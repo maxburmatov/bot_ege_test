@@ -3,7 +3,7 @@ from aiogram.types import (
     KeyboardButton
 )
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
-from core.database.admin_metods import get_count_new_request, get_count_status_request
+from core.database.metods.admin_metods import get_count_new_request, get_count_status_request
 
 from core.lexicon.lexicon import LEXICON_BUTTON, LEXICON_BUTTON_main_menu
 
@@ -13,7 +13,7 @@ async def get_admin_panel():
     kb_list = [
         [
             KeyboardButton(text=LEXICON_BUTTON["admin_stats"]),
-            KeyboardButton(text=LEXICON_BUTTON["admin_users"])
+            KeyboardButton(text=LEXICON_BUTTON["admin_bots"])
         ],
         [
             KeyboardButton(text=LEXICON_BUTTON["admin_edit"]),
@@ -100,6 +100,24 @@ admin_edit_menu = ReplyKeyboardMarkup(
     resize_keyboard=True
 )
 
+admin_bots_menu = ReplyKeyboardMarkup(
+    keyboard=[
+        [
+            KeyboardButton(text=LEXICON_BUTTON["all_bots_add_points"])
+        ],
+        [
+            KeyboardButton(text=LEXICON_BUTTON["bot_edit"])
+        ],
+        [
+            KeyboardButton(text=LEXICON_BUTTON["bot_add"])
+        ],
+        [
+            KeyboardButton(text=LEXICON_BUTTON["back_admin_panel"])
+        ]
+    ],
+    resize_keyboard=True
+)
+
 back_admin_panel = ReplyKeyboardMarkup(
     keyboard=[
         [
@@ -108,7 +126,6 @@ back_admin_panel = ReplyKeyboardMarkup(
     ],
     resize_keyboard=True
 )
-
 
 
 back_admin_request = ReplyKeyboardMarkup(
